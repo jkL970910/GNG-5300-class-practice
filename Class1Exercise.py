@@ -1,5 +1,5 @@
-user_input_1 = 2
-user_input_2 = 3
+user_input_1 = input("please enter your first value: ")
+user_input_2 = input("please enter your second value: ")
 
 output_operation_1 = user_input_1 + user_input_2
 output_operation_2 = user_input_1 - user_input_2
