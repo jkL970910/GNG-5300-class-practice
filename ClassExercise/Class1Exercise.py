@@ -12,7 +12,7 @@ print(output_operation_1, output_operation_2, output_operation_3, output_operati
 output_operation_1 = output_operation_1 + user_input_3
 output_operation_2 = output_operation_2 - user_input_3
 output_operation_3 = output_operation_3 * user_input_3
-output_operation_4 = output_operation_4 ** user_input_3a
+output_operation_4 = output_operation_4 ** user_input_3
 output_operation_5 = output_operation_5 / user_input_3
 print(output_operation_1, output_operation_2, output_operation_3, output_operation_4, output_operation_5)
 
