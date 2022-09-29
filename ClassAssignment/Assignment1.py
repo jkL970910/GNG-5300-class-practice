@@ -12,6 +12,7 @@ def check_student(name):
     for student in student_list:
         if name == student.get_name():
             return student
+    print("The Student Didn't Existed!")
     return -1
 
 # check whether the course number is already in the student's course list
@@ -24,7 +25,7 @@ def check_course_number(number):
 
 # check whether a course name is already been used
 def check_course_name(name):
-    for course in course_list_map:
+    for course in course_list_map.values():
         if name == course.get_name():
             return True
     return False
@@ -37,14 +38,20 @@ def check_student_in_course_list(name, course):
 def check_course_list():
     print("The current course list is: ")
     for course in course_list_map.values():
-        print("Course Number: " + course.get_number() + " Course Name: " + course.get_name() + " Description: " + course.get_description())
+        print("Course Number: " + str(course.get_number()) + " Course Name: " + course.get_name() + " Description: " + course.get_description())
+
+# print the whole enrolled students list of current course
+def check_enrolled_students(enroll_student_list):
+    print("The current enrolled student list is: ")
+    for student in enroll_student_list:
+        print("Student Name: " + student)
 
 # generate a unique course number for each course
 def course_number_generator():
     new_number = random.randint(0, 99)
     while(check_course_number(new_number)):
         new_number = random.randint(0, 99)
-    return new_number
+    return str(new_number)
 
 class Course:
     def __init__(self, name, number, description):
@@ -109,9 +116,9 @@ class Admin(User):
     
     def create_course(self):
         course_name = input("Please Enter the Course Name: ")
-        if (check_course_number(course_name)):
+        if (check_course_name(course_name)):
             print("Create Course Failed: The Course Name already existed!")
-            self.create_course()
+            return
         course_number = course_number_generator()
         course_description = input("Please Enter the Course Description: ")
         course_list_map[course_number] = Course(course_name, course_number, course_description)
@@ -122,7 +129,7 @@ class Admin(User):
             print("The Course Number didn't existed!")
             return
         course = course_list_map[course_number]
-        operation_case = int(input("Please choose your operation, 1 for update course name, 2 for update course description, 3 for update enrolled student list"))
+        operation_case = int(input("Please choose your operation, 1 for update course name, 2 for update course description, 3 for update enrolled student list, others for exist: "))
         match operation_case:
             case 1:
                 course_name = input("Please Enter the new Course Name: ")
@@ -132,51 +139,52 @@ class Admin(User):
                 else:
                     course.set_name(course_name)
                     print("Update Course Name Successful!")
-                return
             case 2:
                 course_description = input("Please Enter the new Course Description: ")
                 course.set_description(course_description)
                 print("Update Course Description Successful!")
-                return
             case 3:
                 self.update_course_student_list(course_number)
-                return
             case _:
-                print("Please enter number between 1 and 3")
+                print("Existed Successful.")
+                return
     
     def update_course_student_list(self, course_number):
         course = course_list_map[course_number]
-        student_name = input("Please Enter the Student Name: ")
-        while (check_student(student_name) == -1):
-            print("The Student Didn't Existed!")
-            student_name = input("Please Enter the Student Name: ")
-        operation_case = int(input("Please choose your operation, 1 for enroll new student in this course, 2 for remove student from this course"))
+        check_enrolled_students(course.get_enroll_student_list())
+        operation_case = int(input("Please choose your operation, 1 for enroll new student in this course, 2 for remove student from this course, others for exist: "))
         match operation_case:
             case 1:
-                if check_student_in_course_list(student_name, course):
-                    print("The Student is already enrolled this course")
+                student_name = input("Please Enter the Student Name: ")
+                if check_student(student_name) == -1:
+                    print("Enrolled Failed!")
                 else:
-                    enrolled_list = course.get_enroll_student_list()
-                    enrolled_list.append(student_name)
-                    course.set_enroll_student_list(enrolled_list)
-                    print("Enrolled Successful!")
-                return
+                    if check_student_in_course_list(student_name, course):
+                        print("The Student is already enrolled this course")
+                    else:
+                        enrolled_list = course.get_enroll_student_list()
+                        enrolled_list.append(student_name)
+                        course.set_enroll_student_list(enrolled_list)
+                        print("Enrolled Successful!")
             case 2:
-                if not check_student_in_course_list(student_name, course):
-                    print("The Student is not enrolled this course")
+                student_name = input("Please Enter the Student Name: ")
+                if check_student(student_name) == -1:
+                    print("Removed Failed!")
                 else:
-                    enrolled_list = course.get_enroll_student_list()
-                    enrolled_list.remove(student_name)
-                    course.set_enroll_student_list(enrolled_list)
-                    print("Removed Successful!")
-                return
+                    if not check_student_in_course_list(student_name, course):
+                        print("The Student is not enrolled this course")
+                    else:
+                        enrolled_list = course.get_enroll_student_list()
+                        enrolled_list.remove(student_name)
+                        course.set_enroll_student_list(enrolled_list)
+                        print("Removed Successful!")
             case _:
-                print("Please enter number between 1 and 2")
+                print("Existed Successful.")
+                return
     
     def delete_course(self, course_number):
         if not check_course_number(course_number):
             print("The Course Number didn't existed!")
-            return
         else:
             del course_list_map[course_number]
             print("Deleted Course Successful!")
@@ -222,9 +230,9 @@ class CourseManageSystem:
             print("Signed in as an Admin")
             operation_number = 1
             while (operation_number != 3):
-                operation_number = int(input("Please choose your operation, 1 for Course, 2 for Student, 3 to exist: "))
+                operation_number = int(input("Please choose your operation, 1 for Course, 2 for Student, 3 for exist: "))
                 if operation_number == 1:
-                    course_operation_number = int(input("Please choose your operation, 1 for check current course list, 2 for create new course, 3 for update course, 4 for delete a course: "))
+                    course_operation_number = int(input("Please choose your operation, 1 for check current course list, 2 for create new course, 3 for update course, 4 for delete a course, others for exist: "))
                     match course_operation_number:
                         case 1:
                             check_course_list()
@@ -236,12 +244,19 @@ class CourseManageSystem:
                         case 4:
                             course_number = input("Please Enter the Course Number: ")
                             current_user.delete_course(course_number)
+                        case _:
+                            print("Existed Successful.")
+                            return
                 elif operation_number == 2:
                     print("Operation for Student is coming soon")
-                else:
+                elif operation_number == 3:
                     print("Existed Successful.")
                     return
+                else:
+                    print("You must enter numbers between 1 and 3.")
 # ==========================================================================
 system = CourseManageSystem()
+course_list_map["123"] = Course("Test", "123", "Test")
+student_list.append(Student("Test"))
 while(True):
     system.set_up()
