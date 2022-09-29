@@ -1,2 +1,4 @@
 # GNG-5300-class-practice
-class practice for the GNG 5300
+Class Exercise for the GNG 5300
+Exercise 1: PR with teammates
+Exercise 2: Grading system with add/update/delete functions
