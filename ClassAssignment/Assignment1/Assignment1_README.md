@@ -1,12 +1,12 @@
 Assignment 1: A Student and Course Management Program designed via Python  
 
-The basic assumptions of this project:  
+#The basic assumptions of this project:  
 - To login as a Admin, enter the name "Admin", we can not create any other admin  
 - We assume that all the course & student name are unique, and case sensitive  
 - We assume a course grade is between 0 - 100
 - We assume that if a course is dropped by a student or a student is removed from a course list by the Admin, the previous submitted grade will be clear, the Admin will need to submit the grade again  
 
-What this system can do:   
+#What this system can do:   
 1: Login by entering the name of the user, "Admin" stands for the admin, others for student, if a name isn't existed, will ask to create a new student  
 
 2: Admin functions:  
