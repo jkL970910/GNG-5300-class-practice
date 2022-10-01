@@ -1,17 +1,22 @@
 import random
+# ==================================================================================
+# assignment assumptions: 
+# 1 - To login as a Admin, enter the name "Admin", we can not create any other admin
+# 2 - We assume that all the course & student name are unique, and case sensitive
+# ==================================================================================
 
-# ======================================================================
+# ==================================================================================
 # Globle Variables
-# ======================================================================
+# ==================================================================================
 # Courses map to store all the existing courses infromation
 # key: course number, value: course object
 course_list_map = {}
 # Students list to store all the students information
 student_list = []
 
-# ======================================================================
+# ==================================================================================
 # Course Class
-# ======================================================================
+# ==================================================================================
 class Course:
     def __init__(self, name, number, description):
         self.__name = name
@@ -41,9 +46,9 @@ class Course:
     def set_enroll_student_list(self, list):
         self.__enroll_student_list = list
 
-# ======================================================================
+# ==================================================================================
 # User Class
-# ======================================================================
+# ==================================================================================
 class User:
     def __init__(self, name):
         self.__name = name
@@ -58,9 +63,9 @@ class User:
     def set_role(self, role):
         self.__role = role
 
-# ======================================================================
+# ==================================================================================
 # Admin Class
-# ======================================================================
+# ==================================================================================
 class Admin(User):
     def __init__(self, name):
         super().__init__(name)
@@ -157,9 +162,9 @@ class Admin(User):
             del course_list_map[course_number]
             print("Deleted Course Successful!")
 
-# ======================================================================
+# ==================================================================================
 # Student Class
-# ======================================================================
+# ==================================================================================
 class Student(User):
     def __init__(self, name):
         super().__init__(name)
@@ -206,9 +211,9 @@ class Student(User):
         else:
             update_student_list_and_course_list(student_name, enroll_course_number, "unenroll")
 
-# ======================================================================
+# ==================================================================================
 # Global functions
-# ======================================================================
+# ==================================================================================
 # check whether a student is already existed
 def check_student(name):
     for student in student_list:
@@ -218,9 +223,22 @@ def check_student(name):
 
 # print the whole list of current students 
 def check_student_list():
-    print("The current student list is: ")
-    for student in student_list:
-        print("Student Name: " + student.get_name())
+    if len(student_list) == 0:
+        print("Empty, no student in the system yet")
+    else:
+        print("The current student list is: ")
+        for student in student_list:
+            print("Student Name: " + student.get_name())
+
+# print the enrolled course list of the current student
+def check_enroll_course_list(enrolled_course_list):
+    print("Your current enrolled course list is: ")
+    if len(enrolled_course_list.keys()) == 0:
+        print("Empty")
+    else:
+        for entry in enrolled_course_list.keys():
+            course = check_course_number(entry)
+            print("Course Number: " + str(course.get_number()) + " Course Name: " + course.get_name() + " Description: " + course.get_description())
 
 # check whether the course number is already in the student's course list
 def check_course_enroll(number, student_enroll_course_list):
@@ -247,14 +265,20 @@ def check_student_in_course_list(name, course):
 # print the whole list of current courses 
 def check_course_list():
     print("The current course list is: ")
-    for course in course_list_map.values():
-        print("Course Number: " + str(course.get_number()) + " Course Name: " + course.get_name() + " Description: " + course.get_description())
+    if len(course_list_map) == 0:
+        print("Empty, no course available yet")
+    else:
+        for course in course_list_map.values():
+            print("Course Number: " + str(course.get_number()) + " Course Name: " + course.get_name() + " Description: " + course.get_description())
 
 # print the whole enrolled students list of current course
 def check_enrolled_students(enroll_student_list):
     print("The current enrolled student list is: ")
-    for student in enroll_student_list:
-        print("Student Name: " + student)
+    if len(enroll_student_list) == 0:
+        print("Empty, no student enroll yet")
+    else:
+        for student in enroll_student_list:
+            print("Student Name: " + student)
 
 # generate a unique course number for each course
 def course_number_generator():
@@ -290,9 +314,9 @@ def update_student_list_and_course_list(student_name, enroll_course_number, case
         student.set_enrolled_course_list(enrolled_course_list)
         print("Unenrolled Successful")
 
-# ======================================================================
+# ==================================================================================
 # CourseManageSystem Class
-# ======================================================================
+# ==================================================================================
 class CourseManageSystem:
     # create new student object into the system student list
     def create_new_student(self):
@@ -376,10 +400,11 @@ class CourseManageSystem:
                 if operation_number == "1":
                     check_course_list()
                 elif operation_number == "2":
+                    check_enroll_course_list(current_user.get_enrolled_course_list())
                     choose_course_number = input("Please entern the course number you want to enroll: ")
                     current_user.enroll_course(current_user.get_name(), choose_course_number)
                 elif operation_number == "3":
-                    current_user.check_enrolled_course_list()
+                    check_enroll_course_list(current_user.get_enrolled_course_list())
                     choose_course_number = input("Please entern the course number you want to unenroll: ")
                     current_user.remove_course(current_user.get_name(), choose_course_number)
                 elif operation_number == "4":
@@ -391,9 +416,9 @@ class CourseManageSystem:
                 else:
                     print("You must enter numbers between 1 and 4.")
 
-# ======================================================================
-# Function Init
-# ======================================================================
+# ==================================================================================
+# System Init
+# ==================================================================================
 system = CourseManageSystem()
 course_list_map["123"] = Course("Test", "123", "Test")
 student_list.append(Student("Test"))
