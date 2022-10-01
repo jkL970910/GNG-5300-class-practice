@@ -85,14 +85,16 @@ class Admin(User):
             print("Submitted grade failed")
             return
         grade = input("Enter the grade of the student: ")
-        student_list = student.get_enrolled_course_list()
-        if (check_course_enroll(course_number, student_list)):
-            student_list[course_number] = grade
-            student.set_enrolled_course_list(student_list)
-            print("Submit Grade Successfully!")
+        if int(grade) > 0 and int(grade) <= 100:
+            student_list = student.get_enrolled_course_list()
+            if (check_course_enroll(course_number, student_list)):
+                student_list[course_number] = grade
+                student.set_enrolled_course_list(student_list)
+                print("Submit Grade Successfully!")
+            else:
+                print("Submit Grade Error: The student " + student_name + " didn't enroll in this course. Course Number: " + str(course_number))
         else:
-            print("Submit Grade Error: The student " + student_name + " didn't enroll in this course. Course Number: " + str(course_number))
-    
+            print("Submit Grade Error, the grade must between 1 and 100")
     # create a new course into the system course list
     def create_course(self):
         course_name = input("Please Enter the Course Name: ")
@@ -420,7 +422,8 @@ class CourseManageSystem:
 # System Init
 # ==================================================================================
 system = CourseManageSystem()
-course_list_map["123"] = Course("Test", "123", "Test")
-student_list.append(Student("Test"))
+course_list_map["123"] = Course("Test", "123", "Test Course")
+student_list.append(Student("Jack"))
+student_list.append(Student("Amy"))
 while(True):
     system.set_up()
