@@ -8,21 +8,23 @@ The basic assumptions of this project:
 
 What this system can do:   
 1: Login by entering the name of the user, "Admin" stands for the admin, others for student, if a name isn't existed, will ask to create a new student  
+
 2: Admin functions:  
-  2.1 functions for Courses:  
-  - check the whole course lists in the system  
-  - create a new course, by entering the course name & course description, the system will generate a unique course number automatically  
-  - update a course:  
-    - update the course name & descritption  
-    - update the enrolled student list of the course  
-      - enroll a new student into the course, by entering the student name  
-      - unenroll a existing student from the course, by entering the student name  
+  - functions for Courses:  
+    - check the whole course lists in the system  
+    - create a new course, by entering the course name & course description, the system will generate a unique course number automatically  
+    - update a course:  
+      - update the course name & descritption  
+      - update the enrolled student list of the course  
+        - enroll a new student into the course, by entering the student name  
+        - unenroll a existing student from the course, by entering the student name  
     - delete a course, by entering the course number  
-  2.2 functions for Students:  
+  - functions for Students:  
     - check the whole student list in the system  
     - submit a course grade for a student, by entering the course number, the student name and the grade  
     - create a new student in the system, by entering a student name  
     - delete a student in the system, by entering the student name  
+
 3: Student functions:
   - check the whole course lists in the system  
   - enroll a course, by entering the course number  
